@@ -1290,19 +1290,26 @@ WinBox.prototype.resize = function(w, h, _skip_update){
  * @this WinBox
  */
 
-WinBox.prototype.addControl = function(control){
-
+WinBox.prototype.addControl = function (control) {
     const classname = control["class"];
     const image = control.image;
     const click = control.click;
     const index = control.index;
+    const html = control.html;
+
     const node = document.createElement("span");
     const icons = getByClass(this.dom, "wb-control");
     const self = this;
 
-    if(classname) node.className = classname;
-    if(image) setStyle(node, "background-image", "url(" + image + ")");
-    if(click) node.onclick = function(event){ click.call(this, event, self) };
+    if (classname) node.className = classname;
+    if (image) setStyle(node, "background-image", "url(" + image + ")");
+    if (html) node.innerHTML = html;
+
+    if (click) {
+        node.onclick = function (event) {
+            click.call(this, event, self);
+        };
+    }
 
     icons.insertBefore(node, icons.childNodes[index || 0]);
 
